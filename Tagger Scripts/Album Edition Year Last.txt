@@ -1,1 +1,47 @@
+$set(_starting_album,%album%)
+$set(_original_release_type,$get(release type))
 
+$set(_orig_year,$left(%originaldate%,4))
+$set(_release_year,$left(%date%,4))
+
+$if(%_release_year%,$set(year,%_release_year%))
+$if(%_orig_year%,$set(originalyear,%_orig_year%))
+
+$unset(_reissueyear)
+$if($and(%_orig_year%,%_release_year%,$ne(%_orig_year%,%_release_year%)),$set(_reissueyear,%_release_year%))
+
+$set(_final_album,%_starting_album%)
+
+$set(_final_album,$replace(%_final_album%,\(,[))
+$set(_final_album,$replace(%_final_album%,\),]))
+
+$set(_extra,)
+$if($and(%_original_release_type%,$ne(%_original_release_type%,Normal Release)),$set(_extra,%_original_release_type%))
+
+$if($and(%_extra%,$in(%_final_album%,%_extra%)),$set(_extra,))
+
+$if($and(%_extra%,$ne(%_extra%,Normal Release)),$set(_final_album,%_final_album% [%_extra%]))
+
+$set(_space, )
+$set(_yearprefix,[%_release_year% )
+
+$if(%_reissueyear%,$set(_final_album,$replace(%_final_album%,%_yearprefix%,[)))
+$if($and(%_reissueyear%,$in(%_final_album%,[),$not($in(%_final_album%,[%_release_year%]))),$set(_final_album,$replace(%_final_album%,[, [%_release_year% )))
+
+$set(_colonspace,: )
+$if($in(%_starting_album%,:),$set(_final_album,$replace(%_final_album%,%_colonspace%,%_space%[)))
+$if($in(%_starting_album%,:),$set(_final_album,%_final_album%]))
+
+$set(album,%_final_album%)
+
+$set(album,$replace(%album%,  , ))
+
+$if($and($in(%album%,[),$not($in(%album%,]))),$set(album,%album%]))
+
+$if($in(%album%,[2022 Deluxe),$set(album,$replace(%album%,[2022 Deluxe],[Remastered Deluxe Edition 2022])))
+
+$if($in(%album%,[Deluxe 2022]),$set(album,$replace(%album%,[Deluxe 2022],[Remastered Deluxe Edition 2022])))
+
+$if($in(%album%,[2022 Remastered Deluxe Edition] [2022 Remastered Deluxe Edition]),$set(album,$replace(%album%,[2022 Remastered Deluxe Edition] [2022 Remastered Deluxe Edition],[Remastered Deluxe Edition 2022])))
+
+$if($in(%album%,[Remastered Deluxe Edition 2022] [Remastered Deluxe Edition 2022]),$set(album,$replace(%album%,[Remastered Deluxe Edition 2022] [Remastered Deluxe Edition 2022],[Remastered Deluxe Edition 2022])))
