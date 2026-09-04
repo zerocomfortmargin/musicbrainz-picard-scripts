@@ -40,8 +40,6 @@ Examples:
 
 The File Naming Scripts determine how Picard organizes music files and folders.
 
-The File Naming Scripts determine how Picard organizes music files and folders.
-
 Artist - Album [Year]
 
 Standard organization:
