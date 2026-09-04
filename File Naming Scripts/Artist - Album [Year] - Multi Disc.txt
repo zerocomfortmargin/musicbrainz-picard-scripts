@@ -1,1 +1,15 @@
+$set(_orig_year,$left(%originaldate%,4))
+$set(_release_year,$left(%date%,4))
+$set(_album,%album%)
 
+$if($and(%_orig_year%,$in(%_album%,[),$ne(%_orig_year%,%_release_year%)),$set(_album,$replace(%_album%,[,[%_orig_year%] [)))
+
+$if($and(%_orig_year%,$in(%_album%,[),$eq(%_orig_year%,%_release_year%)),$set(_album,$replace(%_album%,[,%_orig_year% [)))
+
+$if($and(%_orig_year%,$not($in(%_album%,[)),$ne(%_orig_year%,%_release_year%)),$set(_album,%_album% [%_orig_year%]))
+
+$if($and(%_orig_year%,$not($in(%_album%,[)),$eq(%_orig_year%,%_release_year%)),$set(_album,%_album% [%_orig_year%]))
+
+%albumartist% - %_album%/
+$if($gt(%totaldiscs%,1),$num(%discnumber%,1)-,)
+$num(%tracknumber%,2) - %title%
